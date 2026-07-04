@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayHub - Ultimate HTML5 Gaming Platform</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-light: #a29bfe;
+            --secondary: #fd79a8;
+            --dark: #1f222d;
+            --light: #f5f6fa;
+            --gray: #636e72;
+            --success: #00b894;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 32px;
+        }
+        
+        /* Navigation Styles */
+        .nav-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            transform: translateX(-50%);
+        }
+        
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: white;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .search-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 30px;
+            color: white;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            width: 200px;
+        }
+        
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: white;
+            outline: none;
+            width: 100%;
+            font-size: 14px;
+        }
+        
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .search-bar i {
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+        
+        .search-bar:focus-within {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+        
+        /* Mobile Menu Styles */
+        @media (max-width: 992px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .nav-container {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 350px;
+                height: 100vh;
+                background: linear-gradient(135deg, var(--primary), var(--primary-light));
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 80px 30px 30px;
+                transition: right 0.3s ease-in-out;
+                z-index: 1000;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-container.active {
+                right: 0;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                gap: 15px;
+                margin-bottom: 30px;
+                transform: none;
+            }
+            
+            .nav-links a {
+                font-size: 18px;
+                padding: 10px 0;
+            }
+            
+            .user-actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 20px;
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+            
+            .mobile-menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s, visibility 0.3s;
+            }
+            
+            .mobile-menu-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: white;
+            color: var(--primary);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .main-content {
+            padding: 60px 0;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .section.filter-view {
+            margin-bottom: 0;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .view-all {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .view-all:hover {
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+        
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .category {
+            padding: 8px 20px;
+            background-color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .category:hover, .category.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+        }
+        
+        .game-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .game-card:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .game-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--success);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 2;
+        }
+        
+        .game-thumbnail {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .game-card:hover .game-thumbnail img {
+            transform: scale(1.1);
+        }
+        
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .game-info {
+            padding: 20px;
+        }
+        
+        .game-title {
+            font-size: 18px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+        
+        .game-rating {
+            color: #f39c12;
+        }
+        
+        .game-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .play-now {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .play-now:hover {
+            background-color: #5a4bd6;
+        }
+        
+        .favorite-btn {
+            background-color: #f1f2f6;
+            color: var(--gray);
+            width: 40px;
+        }
+        
+        .favorite-btn.favorited {
+            background-color: #ffecef;
+            color: var(--secondary);
+        }
+        
+        .favorite-btn:hover {
+            background-color: #e2e3e7;
+        }
+        
+        .favorite-btn.favorited:hover {
+            background-color: #ffdde2;
+        }
+        
+        .game-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .game-viewer.active {
+            display: flex;
+        }
+        
+        .game-viewer-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+        
+        .game-viewer-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .game-viewer-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .game-viewer-close:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .game-viewer-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .game-iframe {
+            width: 100%;
+            max-width: 900px;
+            height: 80vh;
+            border: none;
+            border-radius: 10px;
+            background-color: black;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .game-viewer-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .viewer-action-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .fullscreen-btn {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .fullscreen-btn:hover {
+            background-color: #5a4bd6;
+            transform: translateY(-2px);
+        }
+        
+        .newsletter {
+            background: linear-gradient(135deg, #0984e3, #74b9ff);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            border-radius: 15px;
+            margin: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .newsletter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+        }
+        
+        .newsletter-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        .newsletter h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        
+        .newsletter p {
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .newsletter-form button {
+            padding: 15px 30px;
+            background-color: #00cec9;
+            color: white;
+            border: none;
+            border-radius: 0 30px 30px 0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .newsletter-form button:hover {
+            background-color: #00b5b2;
+        }
+        
+        .newsletter-message {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        
+        .newsletter-message.success {
+            background-color: rgba(255, 255, 255, 0.2);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .newsletter-message.error {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            justify-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #b2bec3;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            text-decoration: none;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b2bec3;
+            font-size: 14px;
+        }
+        
+        .filtered-category-title {
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out;
+            display: none;
+        }
+        
+        @media (max-width: 992px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .newsletter h2 {
+                font-size: 26px;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .newsletter-form input,
+            .newsletter-form button {
+                border-radius: 30px;
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .game-thumbnail {
+                height: 120px;
+            }
+            
+            .game-info {
+                padding: 13px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .categories {
+                gap: 10px;
+            }
+            
+            .category {
+                padding: 6px 15px;
+                font-size: 13px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    PlayHub
+                </a>
+                
+                <!-- Mobile Menu Toggle Button -->
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <!-- Mobile Menu Overlay -->
+                <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+                
+                <!-- Navigation Container -->
+                <div class="nav-container" id="nav-container">
+                    <nav class="nav-links">
+                        <a href="/" class="active">Home</a>
+                        <a href="#popular-games">Popular</a>
+                        <a href="#categories">Categories</a>
+                        <a href="#new-releases">New Releases</a>
+                        <a href="#">Favorites</a>
+                    </nav>
+                    
+                    <div class="user-actions">
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search games..." id="search-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Play Unlimited HTML5 Games</h1>
+                <p>Discover the best collection of free online games. No downloads required - play instantly in your browser!</p>
+                <div class="hero-buttons">
+                    <a href="#games" class="btn">Browse Games</a>
+                    <a href="#popular-games" class="btn btn-primary">Popular Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <main class="main-content" id="games">
+        <div class="container">
+            <section class="section">
+                <div class="categories" id="categories">
+                    <div class="category active">All</div>
+                    <div class="category">Action</div>
+                    <div class="category">Adventure</div>
+                    <div class="category">Puzzle</div>
+                    <div class="category">Racing</div>
+                    <div class="category">Sports</div>
+                    <div class="category">Shooter</div>
+                    <div class="category">Multiplayer</div>
+                    <div class="category">Casual</div>
+                </div>
+                
+                <div class="filtered-category-title" id="filtered-category-title">
+                    <h2 class="section-title" id="active-category-title">All Games</h2>
+                </div>
+                
+                <div class="section-header">
+                    <h2 class="section-title">Recently Played</h2>
+                </div>
+                
+                <div class="games-grid" id="recent-games">
+                    <!-- Recently played games will be added here by JavaScript -->
+                </div>
+            </section>
+            
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Popular Games</h2>
+                </div>
+                
+                <div class="games-grid" id="popular-games">
+                    <!-- Popular games will be added here by JavaScript -->
+                </div>
+            </section>
+            
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title" id="new-releases">New Releases</h2>
+                    <a href="#" class="view-all" id="new-releases-view-all">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="games-grid" id="new-games">
+                    <!-- New games will be added here by JavaScript -->
+                </div>
+            </section>
+            
+            <section class="newsletter">
+                <div class="newsletter-content">
+                    <h2>Stay Updated</h2>
+                    <p>Subscribe to our newsletter to get notified about new games and exclusive offers.</p>
+                    <form class="newsletter-form" id="newsletter-form">
+                        <input type="email" placeholder="Your email address" id="newsletter-email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                    <div id="newsletter-message" class="newsletter-message"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <div class="game-viewer" id="game-viewer">
+        <div class="game-viewer-header">
+            <div class="game-viewer-title" id="game-viewer-title">Game Title</div>
+            <button class="game-viewer-close" id="game-viewer-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="game-viewer-content">
+            <iframe class="game-iframe" id="game-iframe" allowfullscreen></iframe>
+        </div>
+        <div class="game-viewer-actions">
+            <button class="viewer-action-btn fullscreen-btn" id="fullscreen-btn">
+                <i class="fas fa-expand"></i> Fullscreen
+            </button>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>PlayHub</h3>
+                    <p>Your ultimate destination for free HTML5 games. Play instantly without downloads.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Important Page</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="/privacy"><i class="fas fa-chevron-right"></i> Privacy</a></li>
+                        <li><a href="/terms"><i class="fas fa-chevron-right"></i> Terms</a></li>
+                        <li><a href="/about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="/contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-category" data-category="Action"><i class="fas fa-chevron-right"></i> Action</a></li>
+                        <li><a href="#" class="footer-category" data-category="Adventure"><i class="fas fa-chevron-right"></i> Adventure</a></li>
+                        <li><a href="#" class="footer-category" data-category="Puzzle"><i class="fas fa-chevron-right"></i> Puzzle</a></li>
+                        <li><a href="#" class="footer-category" data-category="Racing"><i class="fas fa-chevron-right"></i> Racing</a></li>
+                        <li><a href="#" class="footer-category" data-category="Sports"><i class="fas fa-chevron-right"></i> Sports</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 PlayHub. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile Menu Toggle Functionality
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const navContainer = document.getElementById('nav-container');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            navContainer.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('active');
+            
+            // Change icon based on menu state
+            if (navContainer.classList.contains('active')) {
+                this.innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                this.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+        
+        // Close menu when clicking overlay
+        mobileMenuOverlay.addEventListener('click', function() {
+            navContainer.classList.remove('active');
+            this.classList.remove('active');
+            mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close menu when clicking a nav link (for single page navigation)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 992) {
+                    navContainer.classList.remove('active');
+                    mobileMenuOverlay.classList.remove('active');
+                    mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        });
+
+        // Sample game data (in a real app, this would come from a database)
+        const games = [
+            {
+                id: 1,
+                title: "Dead Seek",
+                category: "Action",
+                thumbnail: "/image/action/Dead_Seek.jpg",
+                isNew: true,
+                rating: 4.7,
+                url: "https://html5.gamemonetize.com/zt2tti9k25tgwbwmnacqoxz6l921m956/"
+            },
+            {
+                id: 2,
+                title: "Speedboa Warer",
+                category: "Racing",
+                thumbnail: "/image/racing/Speedboa_Warer.jpg",
+                isNew: true,
+                rating: 4.5,
+                url: "https://html5.gamemonetize.com/egufh15xrkv05q6m65s3wqnm42m3wpmq/"
+            },
+            {
+                id: 3,
+                title: "Blue Koala Puzzles",
+                category: "Puzzle",
+                thumbnail: "/image/puzzle/Blue_Koala_Puzzles.jpg",
+                isNew: true,
+                rating: 4.3,
+                url: "https://html5.gamemonetize.com/yct47umxg4piy5w0z61on7bjtwf74ar6/"
+            },
+            {
+                id: 4,
+                title: "Sniper Dinosaur Hunting",
+                category: "Shooter",
+                thumbnail: "/image/shooting/Sniper_Dinosaur_Hunting.jpg",
+                isNew: true,
+                rating: 4.8,
+                url: "https://html5.gamemonetize.com/o8m5s0ichg906dv22mwxn24ww5ryszgc/"
+            },
+            {
+                id: 5,
+                title: "Basketball Arena",
+                category: "Sports",
+                thumbnail: "/image/sports/Basketball_Arena.jpg",
+                isNew: true,
+                rating: 4.6,
+                url: "https://html5.gamemonetize.com/spagewxlfy1nfezsm6x57f794dwlsnyc/"
+            },
+            {
+                id: 6,
+                title: "Healthy Hero",
+                category: "Casual",
+                thumbnail: "/image/casual/Healthy_Hero.jpg",
+                isNew: true,
+                rating: 4.2,
+                url: "https://html5.gamemonetize.com/8gihzfzr5kp63nn5nnwnsu203en94bb3/"
+            },
+            {
+                id: 7,
+                title: "Sunny Fields",
+                category: "Multiplayer",
+                thumbnail: "/image/multiplayer/Sunny_Fields.jpg",
+                isNew: true,
+                rating: 4.9,
+                url: "https://html5.gamemonetize.com/6677ao3k189n72jdo2h94kdvvkmo6c72/"
+            },
+            {
+                id: 8,
+                title: "Pac-Man Classic",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.7,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 9,
+                title: "Snakes Eating Blocks",
+                category: "Adventure",
+                thumbnail: "/image/adventure/Snakes_Eating_Blocks.jpg",
+                isNew: true,
+                rating: 4.4,
+                url: "https://html5.gamemonetize.com/9eu1kt65229y2gvj3f0t8kdi7ror9vda/"
+            },
+            {
+                id: 10,
+                title: "Martial Artist",
+                category: "Adventure",
+                thumbnail: "/image/adventure/Martial_Artist.jpg",
+                isNew: true,
+                rating: 4.6,
+                url: "https://html5.gamemonetize.com/rhcgv1e11i4b969i0me6m3hgxn99295d/"
+            },
+            {
+                id: 11,
+                title: "Goal Finger Football",
+                category: "Sports",
+                thumbnail: "/image/sports/Goal_Finger_Football.jpg",
+                isNew: true,
+                rating: 4.3,
+                url: "https://html5.gamemonetize.com/jdkn10vrii0f5lfmvmzkcxa0u9exwdao/"
+            },
+            {
+                id: 12,
+                title: "Tank Battle Tank War",
+                category: "Shooter",
+                thumbnail: "/image/shooting/Tank_Battle_Tank_War.jpg",
+                isNew: true,
+                rating: 4.5,
+                url: "https://html5.gamemonetize.com/h2uu6i6jr0s10xftbb2icdkb8kom40hp/"
+            },
+            {
+                id: 13,
+                title: "Pokemon Memory Time",
+                category: "Puzzle",
+                thumbnail: "/image/puzzle/Pokemon_Memory_Time.jpg",
+                isNew: true,
+                rating: 4.1,
+                url: "https://html5.gamemonetize.com/mbf3d5yx40vklpnmbg7c86rggzjkx0x1/"
+            },
+            {
+                id: 14,
+                title: "Turbo Racer 3D",
+                category: "Racing",
+                thumbnail: "/image/racing/Turbo_Racer_3D.jpg",
+                isNew: true,
+                rating: 4.7,
+                url: "https://html5.gamemonetize.com/avkcgcjgjh3tq64xmsdwk9tmyblwyzqh/"
+            },
+            {
+                id: 15,
+                title: "Falcon Dogfight",
+                category: "Action",
+                thumbnail: "/image/action/Falcon_Dogfight.jpg",
+                isNew: true,
+                rating: 4.6,
+                url: "https://html5.gamemonetize.com/cl3xlvuunrx3n0wzmg7djrolfz6qv9io/"
+            },
+            {
+                id: 16,
+                title: "Swing Hero",
+                category: "Casual",
+                thumbnail: "/image/casual/Swing_Hero.jpg",
+                isNew: true,
+                rating: 4.0,
+                url: "https://html5.gamemonetize.com/czcr4z403xj0fdtaqc8ilxvlvzvj3v1r/"
+            },
+            {
+                id: 17,
+                title: "Jungle Fight",
+                category: "Multiplayer",
+                thumbnail: "/image/multiplayer/Jungle_Fight.jpg",
+                isNew: true,
+                rating: 4.8,
+                url: "https://html5.gamemonetize.com/xhx7z1mr85op97320i18awkx4837z316/"
+            },
+            {
+                id: 18,
+                title: "Tetris",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.7,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 19,
+                title: "Super Robot Chogokin",
+                category: "Adventure",
+                thumbnail: "/image/adventure/Super_Robot_Chogokin.jpg",
+                isNew: true,
+                rating: 4.5,
+                url: "https://html5.gamemonetize.com/ilrgmbbz9iahzagncq6oamsbmgktufph/"
+            },
+            {
+                id: 20,
+                title: "GT Flying Car Racing",
+                category: "Racing",
+                thumbnail: "/image/racing/GT_Flying_Car_Racing.jpg",
+                isNew: true,
+                rating: 4.9,
+                url: "https://html5.gamemonetize.com/m5pk5w0ghyz1aux84gvtmq86g1bmb0dc/"
+            },
+            {
+                id: 21,
+                title: "Snake Game",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.2,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 22,
+                title: "Where is my Water",
+                category: "Puzzle",
+                thumbnail: "/image/puzzle/Where_is_my_Water.jpg",
+                isNew: true,
+                rating: 4.4,
+                url: "https://html5.gamemonetize.com/1g5cp5vlxs5vbbvfj5965fd119k19fqv/"
+            },
+            {
+                id: 23,
+                title: "Mr Autofire",
+                category: "Action",
+                thumbnail: "/image/action/Mr_Autofire.jpg",
+                isNew: true,
+                rating: 4.7,
+                url: "https://html5.gamemonetize.com/ghsqbsab3s37q5x2gk5k54w6shwl4i5f/"
+            },
+            {
+                id: 24,
+                title: "Screw Sort Puzzle",
+                category: "Puzzle",
+                thumbnail: "/image/puzzle/Screw_Sort_Puzzle.jpg",
+                isNew: true,
+                rating: 4.1,
+                url: "https://html5.gamemonetize.com/7hih363nnbpbp77p9818x6i79tfp6yjr/"
+            },
+            {
+                id: 25,
+                title: "Tumble Boat",
+                category: "Casual",
+                thumbnail: "/image/casual/Tumble_Boat.jpg",
+                isNew: true,
+                rating: 4.3,
+                url: "https://html5.gamemonetize.com/7hb99cxugmjrazfqlythunduyx1ciek9/"
+            },
+            {
+                id: 26,
+                title: "Logic Islands",
+                category: "Puzzle",
+                thumbnail: "/image/puzzle/Logic_Islands.jpg",
+                isNew: true,
+                rating: 4.0,
+                url: "https://html5.gamemonetize.com/xsocq2kafpyvurms2y1w7o3g3urm948t/"
+            },
+            {
+                id: 27,
+                title: "Crossy Road",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.6,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 28,
+                title: "Flappy Bird",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.5,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 29,
+                title: "Angry Birds",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.8,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 30,
+                title: "Fruit Merge Juicy",
+                category: "Puzzle",
+                thumbnail: "/image/puzzle/Fruit_Merge_Juicy.jpg",
+                isNew: true,
+                rating: 4.7,
+                url: "https://html5.gamemonetize.com/6k4wwg3g81x92db1hb6zchtqmyco7cou/"
+            },
+            {
+                id: 31,
+                title: "Subway Surfers",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.9,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 32,
+                title: "Temple Run",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.7,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 33,
+                title: "Fruit Ninja",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.6,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 34,
+                title: "Doodle Jump",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.4,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 35,
+                title: "Parking Polly Cars",
+                category: "Puzzle",
+                thumbnail: "/image/puzzle/Parking_Polly_Cars.jpg",
+                isNew: true,
+                rating: 4.5,
+                url: "https://html5.gamemonetize.com/kcrzitqb6wihdtc7dgarvuhzpbupldn3/"
+            },
+            {
+                id: 36,
+                title: "Ludo Maximus",
+                category: "Multiplayer",
+                thumbnail: "/image/multiplayer/Ludo_Maximus.jpg",
+                isNew: true,
+                rating: 4.9,
+                url: "https://html5.gamemonetize.com/jmd9j7wzwico2zjafjda0usex5ugfw97/"
+            },
+            {
+                id: 37,
+                title: "Balloon Blitz",
+                category: "Puzzle",
+                thumbnail: "/image/puzzle/Balloon_Blitz.jpg",
+                isNew: true,
+                rating: 4.3,
+                url: "https://html5.gamemonetize.com/0oj4ohrdfog5hba9jp7i47j0fn8ov9v2/"
+            },
+            {
+                id: 38,
+                title: "Candy Match Puzzle",
+                category: "Puzzle",
+                thumbnail: "/image/puzzle/Candy_Match_Puzzle.jpg",
+                isNew: true,
+                rating: 4.2,
+                url: "https://html5.gamemonetize.com/0hyxlldj40odd2yomcfxd8xyhekuf5t9/"
+            },
+            {
+                id: 39,
+                title: "Sprunki Memory Time",
+                category: "Puzzle",
+                thumbnail: "/image/puzzle/Sprunki_Memory_Time.jpg",
+                isNew: true,
+                rating: 4.4,
+                url: "https://html5.gamemonetize.com/l5kai7po6z7hxfjd0fwfbu1zo2ik8k3n/"
+            },
+            {
+                id: 40,
+                title: "Candy Chain Master",
+                category: "Puzzle",
+                thumbnail: "/image/puzzle/Candy_Chain_Master.jpg",
+                isNew: true,
+                rating: 4.1,
+                url: "https://html5.gamemonetize.com/98b383e3zu9cxcutfjeflokpn7snbsdc/"
+            },
+            {
+                id: 41,
+                title: "Bomberman",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.6,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 42,
+                title: "Mario Bros",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.8,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 43,
+                title: "Sonic",
+                category: "Arcade",
+                thumbnail: "https://img.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/512x384.jpg",
+                isNew: true,
+                rating: 4.7,
+                url: "https://html5.gamemonetize.com/qtvk2nsvqk2pztsum8wxpfef4j7rwmvt/"
+            },
+            {
+                id: 44,
+                title: "Tung Tung Sahur",
+                category: "Action",
+                thumbnail: "/image/action/Tung_Tung_Sahur.jpg",
+                isNew: true,
+                rating: 4.9,
+                url: "https://html5.gamemonetize.com/5jekjsbk5wqleu5n4k5sqxibpycywcth/"
+            },
+            {
+                id: 45,
+                title: "Tank Master",
+                category: "Action",
+                thumbnail: "/image/action/Tank_Master.jpg",
+                isNew: true,
+                rating: 4.8,
+                url: "https://html5.gamemonetize.com/r50sosv94qp15bkjhze2givwy8z5bsuu/"
+            },
+            {
+                id: 46,
+                title: "Hunter Tung Tung Sahur",
+                category: "Action",
+                thumbnail: "/image/action/Hunter_Tung_Tung_Sahur.jpg",
+                isNew: true,
+                rating: 4.9,
+                url: "https://html5.gamemonetize.com/2x4uo0nhkmx8q888i1ni2glm3th7kln2/"
+            },
+            {
+                id: 47,
+                title: "Car Stunts Track",
+                category: "Racing",
+                thumbnail: "/image/racing/Car_Stunts_Track.jpg",
+                isNew: true,
+                rating: 4.8,
+                url: "https://html5.gamemonetize.com/i7crwtn7a4fwloe5djewy7qiejzlplsd/"
+            },
+            {
+                id: 48,
+                title: "Stunt Planes",
+                category: "Racing",
+                thumbnail: "/image/racing/Stunt_Planes.jpg",
+                isNew: true,
+                rating: 4.9,
+                url: "https://html5.gamemonetize.com/3boeltjylmwolgm20mh48mol3l9iwakr/"
+            },
+            {
+                id: 49,
+                title: "Riders Downhill Racing",
+                category: "Racing",
+                thumbnail: "/image/racing/Riders_Downhill_Racing.jpg",
+                isNew: true,
+                rating: 4.7,
+                url: "https://html5.gamemonetize.com/pvy2k1jp0znnq1l8uyai88tk2uc6xcf8/"
+            },
+            {
+                id: 50,
+                title: "Bus Driving Simulator",
+                category: "Racing",
+                thumbnail: "/image/racing/Bus_Driving_Simulator.jpg",
+                isNew: true,
+                rating: 4.6,
+                url: "https://html5.gamemonetize.com/adz9a5tpbei6tzq8pgtbcwsmimlmiev0/"
+            }
+        ];
+        
+// DOM elements
+const recentGamesContainer = document.getElementById('recent-games');
+const popularGamesContainer = document.getElementById('popular-games');
+const newGamesContainer = document.getElementById('new-games');
+const gameViewer = document.getElementById('game-viewer');
+const gameIframe = document.getElementById('game-iframe');
+const gameViewerTitle = document.getElementById('game-viewer-title');
+const gameViewerClose = document.getElementById('game-viewer-close');
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+const searchInput = document.getElementById('search-input');
+const categories = document.querySelectorAll('.category');
+const searchSection = document.querySelector('.user-actions');
+const newReleasesViewAll = document.getElementById('new-releases-view-all');
+const filteredCategoryTitle = document.getElementById('filtered-category-title');
+const activeCategoryTitle = document.getElementById('active-category-title');
+const sections = document.querySelectorAll('.section');
+const newsletterForm = document.getElementById('newsletter-form');
+const newsletterEmail = document.getElementById('newsletter-email');
+const newsletterMessage = document.getElementById('newsletter-message');
+
+// Favorites and recently played games
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+let recentlyPlayed = JSON.parse(localStorage.getItem('recentlyPlayed')) || [];
+let newsletterSubscribers = JSON.parse(localStorage.getItem('newsletterSubscribers')) || [];
+
+// Initialize the page
+function init() {
+    renderRecentlyPlayed();
+    renderPopularGames();
+    renderNewGames();
+    setupEventListeners();
+    setupNewsletterForm();
+}
+
+// Render recently played games
+function renderRecentlyPlayed() {
+    recentGamesContainer.innerHTML = '';
+    
+    if (recentlyPlayed.length === 0) {
+        recentGamesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--gray);">No recently played games. Play some games to see them here!</p>';
+        return;
+    }
+    
+    // Get the recently played games data
+    const recentGamesData = recentlyPlayed.map(gameId => 
+        games.find(game => game.id === gameId)
+    ).filter(game => game); // Filter out undefined if game not found
+    
+    recentGamesData.forEach(game => {
+        const isFavorite = favorites.includes(game.id);
+        recentGamesContainer.appendChild(createGameCard(game, isFavorite));
+    });
+}
+
+// Render popular games (sorted by rating)
+function renderPopularGames() {
+    popularGamesContainer.innerHTML = '';
+    
+    // Sort games by rating (descending)
+    const popularGames = [...games].sort((a, b) => b.rating - a.rating).slice(0, 8);
+    
+    popularGames.forEach(game => {
+        const isFavorite = favorites.includes(game.id);
+        popularGamesContainer.appendChild(createGameCard(game, isFavorite));
+    });
+}
+
+// Render new games
+function renderNewGames() {
+    newGamesContainer.innerHTML = '';
+    
+    const newGames = games.filter(game => game.isNew).slice(0, 10);
+    
+    newGames.forEach(game => {
+        const isFavorite = favorites.includes(game.id);
+        newGamesContainer.appendChild(createGameCard(game, isFavorite));
+    });
+}
+
+// Render all new games (for View All)
+function renderAllNewGames() {
+    newGamesContainer.innerHTML = '';
+    
+    const newGames = games.filter(game => game.isNew);
+    
+    if (newGames.length === 0) {
+        newGamesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--gray);">No new games available at the moment.</p>';
+        return;
+    }
+    
+    newGames.forEach(game => {
+        const isFavorite = favorites.includes(game.id);
+        newGamesContainer.appendChild(createGameCard(game, isFavorite));
+    });
+}
+
+// Create a game card element
+function createGameCard(game, isFavorite = false) {
+    const gameCard = document.createElement('div');
+    gameCard.className = 'game-card';
+    gameCard.dataset.id = game.id;
+    gameCard.dataset.category = game.category;
+    gameCard.dataset.title = game.title.toLowerCase();
+    
+    gameCard.innerHTML = `
+        ${game.isNew ? '<div class="game-badge">New</div>' : ''}
+        <div class="game-thumbnail">
+            <img src="${game.thumbnail}" alt="${game.title}">
+            <div class="play-overlay">
+                <div class="play-btn">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
+        </div>
+        <div class="game-info">
+            <h3 class="game-title">${game.title}</h3>
+            <div class="game-meta">
+                <span>${game.category}</span>
+                <span class="game-rating"><i class="fas fa-star"></i> ${game.rating}</span>
+            </div>
+            <div class="game-actions">
+                <button class="action-btn play-now">Play Now</button>
+                <button class="action-btn favorite-btn ${isFavorite ? 'favorited' : ''}">
+                    <i class="fas fa-heart"></i>
+                </button>
+            </div>
+        </div>
+    `;
+    
+    return gameCard;
+}
+
+// Setup newsletter form
+function setupNewsletterForm() {
+    newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = newsletterEmail.value.trim();
+        
+        // Simple email validation
+        if (!email || !email.includes('@')) {
+            showNewsletterMessage('Please enter a valid email address', 'error');
+            return;
+        }
+        
+        // Check if email is already subscribed
+        if (newsletterSubscribers.includes(email)) {
+            showNewsletterMessage('You are already subscribed!', 'error');
+            return;
+        }
+        
+        // Add to subscribers
+        newsletterSubscribers.push(email);
+        localStorage.setItem('newsletterSubscribers', JSON.stringify(newsletterSubscribers));
+        
+        // Show success message
+        showNewsletterMessage('Thank you for subscribing! You will receive updates soon.', 'success');
+        
+        // Reset form
+        newsletterForm.reset();
+    });
+}
+
+// Show newsletter message
+function showNewsletterMessage(message, type) {
+    newsletterMessage.textContent = message;
+    newsletterMessage.className = 'newsletter-message ' + type;
+    newsletterMessage.style.display = 'block';
+    
+    // Hide after 5 seconds
+    setTimeout(() => {
+        newsletterMessage.style.display = 'none';
+    }, 5000);
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    // Play game when clicking play button or card
+    document.addEventListener('click', function(e) {
+        const playBtn = e.target.closest('.play-now, .play-btn');
+        
+        if (playBtn) {
+            const gameCard = playBtn.closest('.game-card');
+            const gameId = parseInt(gameCard.dataset.id);
+            const game = games.find(g => g.id === gameId);
+            
+            if (game) {
+                playGame(game);
+            }
+        }
+        
+        // Favorite button
+        const favoriteBtn = e.target.closest('.favorite-btn');
+        if (favoriteBtn) {
+            const gameCard = favoriteBtn.closest('.game-card');
+            const gameId = parseInt(gameCard.dataset.id);
+            toggleFavorite(gameId, favoriteBtn);
+        }
+    });
+    
+    // Close game viewer
+    gameViewerClose.addEventListener('click', closeGameViewer);
+    
+    // Fullscreen button
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+        const activeCategory = document.querySelector('.category.active').textContent;
+        
+        if (activeCategory === 'All') {
+            // If "All" is selected, just filter without changing the view
+            filterGames();
+        } else {
+            // Otherwise, maintain the filtered view
+            filterGames();
+        }
+        
+        // If search is cleared and "All" is selected, reset to default view
+        if (this.value === '' && activeCategory === 'All') {
+            resetToDefaultView();
+        }
+    });
+    
+    // Category filters
+    categories.forEach(category => {
+        category.addEventListener('click', function() {
+            categories.forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            
+            if (this.textContent === 'All') {
+                resetToDefaultView();
+            } else {
+                filterGames();
+            }
+        });
+    });
+    
+    // New Releases View All button
+    newReleasesViewAll.addEventListener('click', function(e) {
+        e.preventDefault();
+        renderAllNewGames();
+    });
+    
+    // Footer category links
+    document.querySelectorAll('.footer-category').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const category = this.dataset.category;
+            
+            // Set the corresponding category as active
+            categories.forEach(cat => {
+                cat.classList.remove('active');
+                if (cat.textContent === category) {
+                    cat.classList.add('active');
+                }
+            });
+            
+            // Filter games by this category
+            filterGames();
+            
+            // Scroll to the games section
+            document.getElementById('games').scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+}
+
+// Play a game
+function playGame(game) {
+    gameIframe.src = game.url;
+    gameViewerTitle.textContent = game.title;
+    gameViewer.classList.add('active');
+    
+    // Add to recently played
+    addToRecentlyPlayed(game.id);
+}
+
+// Close game viewer
+function closeGameViewer() {
+    gameViewer.classList.remove('active');
+    gameIframe.src = '';
+    
+    // Check if we're in filtered view and reapply if needed
+    const activeCategory = document.querySelector('.category.active').textContent;
+    if (activeCategory !== 'All') {
+        filterGames();
+    }
+}
+
+// Toggle fullscreen
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        gameViewer.requestFullscreen().catch(err => {
+            alert(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+// Toggle favorite
+function toggleFavorite(gameId, button) {
+    const index = favorites.indexOf(gameId);
+    
+    if (index === -1) {
+        favorites.push(gameId);
+        button.classList.add('favorited');
+    } else {
+        favorites.splice(index, 1);
+        button.classList.remove('favorited');
+    }
+    
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+}
+
+// Add to recently played
+function addToRecentlyPlayed(gameId) {
+    // Remove if already exists
+    const index = recentlyPlayed.indexOf(gameId);
+    if (index !== -1) {
+        recentlyPlayed.splice(index, 1);
+    }
+    
+    // Add to beginning
+    recentlyPlayed.unshift(gameId);
+    
+    // Keep only the last 5 games
+    if (recentlyPlayed.length > 5) {
+        recentlyPlayed = recentlyPlayed.slice(0, 5);
+    }
+    
+    localStorage.setItem('recentlyPlayed', JSON.stringify(recentlyPlayed));
+    
+    // Check if we're in filtered view
+    const activeCategory = document.querySelector('.category.active').textContent;
+    if (activeCategory === 'All') {
+        renderRecentlyPlayed();
+    } else {
+        // If in filtered view, reapply the filter instead of just rendering recently played
+        filterGames();
+    }
+}
+
+// Filter games based on search and category
+function filterGames() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const activeCategory = document.querySelector('.category.active').textContent;
+    
+    // Hide all section headers
+    document.querySelectorAll('.section-header').forEach(header => {
+        header.style.display = 'none';
+    });
+    
+    // Show the filtered category title
+    filteredCategoryTitle.style.display = 'block';
+    activeCategoryTitle.textContent = activeCategory === 'All' ? 'All Games' : `${activeCategory} Games`;
+    
+    // Add filter-view class to sections to remove margin
+    sections.forEach(section => {
+        section.classList.add('filter-view');
+    });
+    
+    // Clear all containers first
+    recentGamesContainer.innerHTML = '';
+    popularGamesContainer.innerHTML = '';
+    newGamesContainer.innerHTML = '';
+    
+    // Filter games based on search term and category
+    const filteredGames = games.filter(game => {
+        const matchesSearch = game.title.toLowerCase().includes(searchTerm);
+        const matchesCategory = activeCategory === 'All' || game.category === activeCategory;
+        return matchesSearch && matchesCategory;
+    });
+    
+    if (filteredGames.length === 0) {
+        const noResults = document.createElement('p');
+        noResults.style.gridColumn = '1 / -1';
+        noResults.style.textAlign = 'center';
+        noResults.style.color = 'var(--gray)';
+        noResults.textContent = 'No games found matching your search.';
+        popularGamesContainer.appendChild(noResults);
+        return;
+    }
+    
+    // Render filtered games in the popular games section
+    filteredGames.forEach(game => {
+        const isFavorite = favorites.includes(game.id);
+        popularGamesContainer.appendChild(createGameCard(game, isFavorite));
+    });
+}
+
+// Reset to default view (when "All" category is selected)
+function resetToDefaultView() {
+    // Show all section headers
+    document.querySelectorAll('.section-header').forEach(header => {
+        header.style.display = 'flex';
+    });
+    
+    // Hide the filtered category title
+    filteredCategoryTitle.style.display = 'none';
+    
+    // Remove filter-view class from sections to restore margin
+    sections.forEach(section => {
+        section.classList.remove('filter-view');
+    });
+    
+    // Clear search input
+    searchInput.value = '';
+    
+    // Re-render all sections
+    renderRecentlyPlayed();
+    renderPopularGames();
+    renderNewGames();
+}
+
+// Initialize the app
+init();
+    </script>
+</body>
+</html>
